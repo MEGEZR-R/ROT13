@@ -48,34 +48,27 @@
     </style>
 </head>
 <body>
-    <h1>ROT13 Encoder/Decoder</h1>
-    <label for="inputText">Enter text to encode/decode:</label>
-    <textarea id="inputText" placeholder="Enter text..."></textarea>
-    <button onclick="encode()">Encode</button>
-    <button onclick="decode()">Decode</button>
-    <br>
-    <label for="outputText">Result:</label>
+    <h1>AES Encryption/Decryption for Arabic Text</h1>
+    <label for="inputText">Enter Arabic text to encrypt/decrypt:</label><br>
+    <textarea id="inputText" placeholder="Enter Arabic text..."></textarea><br>
+    <button onclick="encrypt()">Encrypt</button>
+    <button onclick="decrypt()">Decrypt</button><br>
+    <label for="outputText">Result:</label><br>
     <textarea id="outputText" readonly></textarea>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
     <script>
-        function rot13(str) {
-            return str.replace(/[a-zA-Z]/g, function (c) {
-                var base = c <= 'Z' ? 65 : 97;
-                return String.fromCharCode((c.charCodeAt(0) - base + 13) % 26 + base);
-            });
+        function encrypt() {
+            var plaintext = document.getElementById('inputText').value;
+            var ciphertext = CryptoJS.AES.encrypt(plaintext, 'secret key').toString();
+            document.getElementById('outputText').value = ciphertext;
         }
-
-        function encode() {
-            var input = document.getElementById('inputText').value;
-            var encoded = rot13(input);
-            document.getElementById('outputText').value = encoded;
-        }
-
-        function decode() {
-            var input = document.getElementById('inputText').value;
-            var decoded = rot13(input);
-            document.getElementById('outputText').value = decoded;
+    
+        function decrypt() {
+            var ciphertext = document.getElementById('inputText').value;
+            var bytes = CryptoJS.AES.decrypt(ciphertext, 'secret key');
+            var decryptedText = bytes.toString(CryptoJS.enc.Utf8);
+            document.getElementById('outputText').value = decryptedText;
         }
     </script>
 </body>
